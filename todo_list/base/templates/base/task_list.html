@@ -1,0 +1,37 @@
+{% if request.user.is_authenticated %}
+<p style="display: flex; justify-content: space-between;">Usuário: {{ request.user }} 
+    <a href="{% url 'logout' %}" style="text-align: right;">Logout
+    </a>
+</p>
+
+{% else %}
+<a href="{% url 'login' %}">Login</a>
+{% endif %}
+<hr>
+
+<h1>Minha Lista De Tarefas</h1>
+<a href="{% url 'task-create' %}"> Adicionar tarefa</a>
+
+<form method="GET">
+    <input type="text" name="search-area" value="{{search_input}}">
+    <input type="submit" value="Search">
+</form>
+
+<table>
+    <tr>
+        <th> Item</th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td>{{task.title}}</td>
+        <td><a href="{% url 'task' task.id %}">View</a></td>   
+        <td><a href="{% url 'task-update' task.id %}">Edit</a></td>
+        <td><a href="{% url 'task-delete' task.id %}">Delete</a></td>
+    </tr>
+    {% empty %}
+    <h3>Não há itens na lista</h3>
+    {% endfor %}
+</table>
